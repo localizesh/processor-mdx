@@ -18,7 +18,6 @@ function processAndCompare(filename: string) {
   const outDocStructureStr = JSON.stringify(outDocStructure);
 
   assert.equal(outDocStructureStr, docStr);
-  // assert.equal(outDoc, inDoc);
   console.log(filename);
 }
 
