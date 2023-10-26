@@ -1,0 +1,46 @@
+{
+  "name": "@localizeio/mdx",
+  "repository": "localizeio/mdx",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc --project tsconfig.build.json",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@localizeio/md": "^0.12.0",
+    "mdast-util-to-hast": "^13.0.2",
+    "rehype-remark": "^9.1.2",
+    "remark-frontmatter": "^4.0.1",
+    "remark-gfm": "^3.0.1",
+    "remark-mdx": "^2.3.0",
+    "remark-parse": "^10.0.1",
+    "remark-stringify": "^10.0.2",
+    "unified": "10.1.2",
+    "unist-util-visit-parents": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.6",
+    "@types/hast": "^3.0.1",
+    "@types/js-yaml": "^4.0.6",
+    "@types/mdast": "^4.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/unist": "^3.0.0",
+    "chai": "^4.3.8",
+    "mocha": "^10.2.0",
+    "patch-package": "^8.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "@localizeio/lib": "^0.1.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
