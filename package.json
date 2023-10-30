@@ -18,7 +18,7 @@
     "mdast-util-to-hast": "^13.0.2",
     "rehype-remark": "^9.1.2",
     "remark-frontmatter": "^4.0.1",
-    "remark-gfm": "^3.0.1",
+    "remark-gfm": "^4.0.0",
     "remark-mdx": "^2.3.0",
     "remark-parse": "^10.0.1",
     "remark-stringify": "^10.0.2",
