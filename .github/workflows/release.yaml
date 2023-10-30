@@ -13,6 +13,8 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run build
       - run: npm version ${TAG} --no-git-tag-version
         env:
