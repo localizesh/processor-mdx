@@ -16,7 +16,7 @@
   "dependencies": {
     "@localizeio/md": "^0.12.1",
     "mdast-util-to-hast": "^13.0.2",
-    "rehype-remark": "^9.1.2",
+    "rehype-remark": "^10.0.0",
     "remark-frontmatter": "^4.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx": "^2.3.0",
