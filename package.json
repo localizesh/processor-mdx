@@ -11,10 +11,10 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc --project tsconfig.build.json",
     "test": "mocha",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package --patch-dir node_modules/@localizeio/md/patches"
   },
   "dependencies": {
-    "@localizeio/md": "^0.12.0",
+    "@localizeio/md": "^0.12.1",
     "mdast-util-to-hast": "^13.0.2",
     "rehype-remark": "^9.1.2",
     "remark-frontmatter": "^4.0.1",
