@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@localizeio/md": "^0.12.3",
-    "remark-mdx": "^2.3.0"
+    "remark-mdx": "^3.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.6",
