@@ -30,6 +30,10 @@ function findEmptyStringIndices(array: string[], errorIndex: number) {
         }
     }
 
+    if(tempEndIndex <= 0){
+        tempEndIndex = array.length - 1
+    }
+
     for (let i = errorIndex - 1; i >= 0; i--) {
         if (!codeLineRegex.test(array[i])) {
             tempStartIndex = i + 1;
@@ -72,7 +76,14 @@ class MdxProcessor extends MdProcessor {
             const placeholder = "incorrect_syntax_" + count
             const lineValue = docArr[errorIndex].trim()
 
-            if(e.ruleId === "unexpected-eof" || e.ruleId === "acorn"){
+            if(e.ruleId === "unexpected-eof"){
+                const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
+                docArr.splice(startIndex, 0, "```");
+                docArr.splice(endIndex + 2, 0, "```");
+                console.log("qq")
+            }
+
+            if(e.ruleId === "acorn"){
                 const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
                 const deleteCount = endIndex - startIndex + 1
                 replaceMap[placeholder] = docArr.splice(startIndex, deleteCount <= 0 ? 1 : deleteCount, placeholder).join("\n");
@@ -107,7 +118,6 @@ class MdxProcessor extends MdProcessor {
 
                 }
             })
-
         })
 
         return mdast
