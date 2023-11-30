@@ -72,7 +72,7 @@ class MdxProcessor extends MdProcessor {
         } catch (e: any) {
             console.log("error: ", e)
             const errorIndex = e.line -1
-            const docArr = doc.split("\n")
+            const docArr = doc.split(/\r\n|\r|\n/)
             const placeholder = "incorrect_syntax_" + count
             const lineValue = docArr[errorIndex].trim()
 
