@@ -16,7 +16,7 @@ type MdastNodes = import('mdast').Nodes;
 let replaceMap: any = {}
 let count: number = 1
 
-function findEmptyStringIndices(array: string[], errorIndex: number) {
+const findEmptyStringIndices = (array: string[], errorIndex: number) => {
     let endIndex = -1;
     let startIndex = -1;
     let tempEndIndex = -1;
@@ -58,6 +58,42 @@ function findEmptyStringIndices(array: string[], errorIndex: number) {
     return { startIndex, endIndex };
 }
 
+const errorHandler = (e: any, doc: string) => {
+    const errorIndex = e.line -1
+    const docArr = doc.split(/\r\n|\r|\n/)
+    const placeholder = "incorrect_syntax_" + count
+    const lineValue = docArr[errorIndex].trim()
+
+    if(e.ruleId === "unexpected-eof"){
+        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
+        docArr.splice(startIndex, 0, "```");
+        docArr.splice(endIndex + 2, 0, "```");
+    }
+
+    if(e.ruleId === "acorn"){
+        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
+        const deleteCount = endIndex - startIndex + 1
+        replaceMap[placeholder] = docArr.splice(startIndex, deleteCount <= 0 ? 1 : deleteCount, placeholder).join("\n");
+        count++;
+    }
+
+    if(e.ruleId === "unexpected-closing-slash" || e.ruleId === "end-tag-mismatch"){
+        const {start, end} = e.position
+        const startIndex = start.line - 1
+        const endIndex = end.line - 1
+        replaceMap[placeholder] = docArr.splice(startIndex, endIndex, placeholder).join("\n");
+        count++;
+    }
+
+    if(e.ruleId === "unexpected-character"){
+        replaceMap[placeholder] = docArr[errorIndex]
+        docArr[errorIndex] = docArr[errorIndex].replace(lineValue, placeholder)
+        count++;
+    }
+
+    return docArr.join("\n")
+}
+
 class MdxProcessor extends MdProcessor {
     parseMarkdownToMdast(doc: string): MdastRoot {
         let mdast: MdastRoot
@@ -70,41 +106,9 @@ class MdxProcessor extends MdProcessor {
                 .use(gfm)
                 .parse(doc);
         } catch (e: any) {
-            console.log("error: ", e)
-            const errorIndex = e.line -1
-            const docArr = doc.split(/\r\n|\r|\n/)
-            const placeholder = "incorrect_syntax_" + count
-            const lineValue = docArr[errorIndex].trim()
+            const newDoc = errorHandler(e, doc)
 
-            if(e.ruleId === "unexpected-eof"){
-                const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
-                docArr.splice(startIndex, 0, "```");
-                docArr.splice(endIndex + 2, 0, "```");
-                console.log("qq")
-            }
-
-            if(e.ruleId === "acorn"){
-                const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
-                const deleteCount = endIndex - startIndex + 1
-                replaceMap[placeholder] = docArr.splice(startIndex, deleteCount <= 0 ? 1 : deleteCount, placeholder).join("\n");
-                count++;
-            }
-
-            if(e.ruleId === "unexpected-closing-slash" || e.ruleId === "end-tag-mismatch"){
-                const {start, end} = e.position
-                const startIndex = start.line - 1
-                const endIndex = end.line - 1
-                replaceMap[placeholder] = docArr.splice(startIndex, endIndex, placeholder).join("\n");
-                count++;
-            }
-
-            if(e.ruleId === "unexpected-character"){
-                replaceMap[placeholder] = docArr[errorIndex]
-                docArr[errorIndex] = docArr[errorIndex].replace(lineValue, placeholder)
-                count++;
-            }
-
-            mdast = this.parseMarkdownToMdast(docArr.join("\n"))
+            mdast = this.parseMarkdownToMdast(newDoc)
         }
 
         visitParents(mdast, (node: any) => node.type === "text", (node: any, parent: any)=> {
@@ -115,7 +119,6 @@ class MdxProcessor extends MdProcessor {
                 if(value.includes(key)){
                     const source = replaceMap[key]
                     node.value = value.replace(key, source)
-
                 }
             })
         })
