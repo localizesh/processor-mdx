@@ -14,7 +14,6 @@
     "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizeio/md/patches"
   },
   "dependencies": {
-    "@localizeio/md": "^0.12.3",
     "remark-mdx": "^2.3.0"
   },
   "devDependencies": {
@@ -27,7 +26,8 @@
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "@localizeio/lib": "^0.1.1"
+    "@localizeio/lib": "^0.1.1",
+    "@localizeio/md": "^0.13.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
