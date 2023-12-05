@@ -169,7 +169,7 @@ class MdxProcessor extends MdProcessor {
         return super.stringify(data, ctx);
     }
 
-    getElementFromConvertHastToSegment(node: LayoutNode, isNoConvertNode: boolean, convertNode: any): any {
+    getElementFromConvertHastToSegment(node: LayoutNode, isNoConvertNode: boolean, isNodeList: boolean, convertNode: any): any {
         if ((node.type === "element" ||
             node.type === "yaml" ||
             node.type === "mdxjsEsm" ||
