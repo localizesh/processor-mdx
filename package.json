@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "@localizeio/lib": "^0.1.1",
-    "@localizeio/md": "^0.13.2"
+    "@localizeio/md": "^0.14.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
