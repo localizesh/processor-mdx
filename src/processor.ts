@@ -95,6 +95,10 @@ const errorHandler = (e: any, doc: string) => {
 }
 
 class MdxProcessor extends MdProcessor {
+    constructor(context: Context) {
+        super(context)
+    }
+
     parseMarkdownToMdast(doc: string): MdastRoot {
         let mdast: MdastRoot
 
@@ -136,7 +140,7 @@ class MdxProcessor extends MdProcessor {
             .stringify(mdast) as string;
     }
 
-    public parse(doc: string, ctx?: Context): Document {
+    public parse(doc: string): Document {
         const mdxHandler = (h: State, node: MdastNodes) => ({
             ...node,
             children: h.all(node)
@@ -150,10 +154,10 @@ class MdxProcessor extends MdProcessor {
         });
         this.addPassThroughTypes(["mdxJsxFlowElement", "mdxjsEsm", "mdxFlowExpression", "mdxTextExpression"])
 
-        return super.parse(doc, ctx);
+        return super.parse(doc);
     }
 
-    public stringify(data: Document, ctx?: Context): string {
+    public stringify(data: Document): string {
         const mdxHandler = (h: H, node: Node) => ({
             ...node,
             children: toMdastAll(h, node),
@@ -166,16 +170,16 @@ class MdxProcessor extends MdProcessor {
             mdxTextExpression: mdxHandler,
         });
         
-        return super.stringify(data, ctx);
+        return super.stringify(data);
     }
 
-    getElementFromConvertHastToSegment(node: LayoutNode, isNoConvertNode: boolean, isNodeList: boolean, convertNode: any): any {
-        if ((node.type === "element" ||
+    getElementFromConvertHastToSegment(node: LayoutNode, isNodeList: boolean, convertNode: any): any {
+        if (node.type === "element" ||
             node.type === "yaml" ||
             node.type === "mdxjsEsm" ||
             node.type === "mdxJsxFlowElement" ||
             node.type === "mdxFlowExpression" ||
-            node.type === "mdxTextExpression") && !isNoConvertNode) {
+            node.type === "mdxTextExpression") {
 
             deleteFields(node)
             const children = node.children.map(convertNode);
