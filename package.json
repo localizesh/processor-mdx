@@ -26,8 +26,8 @@
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
-    "@localizeio/lib": "^0.1.1",
-    "@localizeio/md": "^0.14.0"
+    "@localizeio/lib": "^0.2.0",
+    "@localizeio/md": "^0.14.3"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
