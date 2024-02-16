@@ -5,7 +5,7 @@ import path from "path";
 
 import MdxProcessor from "../src/processor.js";
 
-const processor = new MdxProcessor();
+const processor = new MdxProcessor("test");
 
 function processAndCompare(filename: string) {
   const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' });
