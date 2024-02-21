@@ -16,7 +16,7 @@ type MdastNodes = import('mdast').Nodes;
 let replaceMap: any = {}
 let count: number = 1
 
-const findEmptyStringIndices = (array: string[], errorIndex: number) => {
+const findEmptyStringIndices = (array: string[], errorIndex: number, isTagError: boolean) => {
     let endIndex = -1;
     let startIndex = -1;
     let tempEndIndex = -1;
@@ -24,7 +24,8 @@ const findEmptyStringIndices = (array: string[], errorIndex: number) => {
     const codeLineRegex = /^ {4,}|^$/;
 
     for (let i = errorIndex; i < array.length; i++) {
-        if (!codeLineRegex.test(array[i])) {
+        const searchRule = isTagError ? array[i] === "" : !codeLineRegex.test(array[i]);
+        if (searchRule) {
             tempEndIndex = i - 1;
             break;
         }
@@ -35,7 +36,8 @@ const findEmptyStringIndices = (array: string[], errorIndex: number) => {
     }
 
     for (let i = errorIndex - 1; i >= 0; i--) {
-        if (!codeLineRegex.test(array[i])) {
+        const searchRule = isTagError ? array[i] === "" : !codeLineRegex.test(array[i]);
+        if (searchRule) {
             tempStartIndex = i + 1;
             break;
         }
@@ -62,26 +64,25 @@ const errorHandler = (e: any, doc: string) => {
     const errorIndex = e.line -1
     const docArr = doc.split(/\r\n|\r|\n/)
     const placeholder = "incorrect_syntax_" + count
-    const lineValue = docArr[errorIndex].trim()
+    const lineValue = docArr[errorIndex]?.trim()
 
     if(e.ruleId === "unexpected-eof"){
-        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
+        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex, false)
         docArr.splice(startIndex, 0, "```");
         docArr.splice(endIndex + 2, 0, "```");
     }
 
     if(e.ruleId === "acorn"){
-        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex)
+        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex, false)
         const deleteCount = endIndex - startIndex + 1
         replaceMap[placeholder] = docArr.splice(startIndex, deleteCount <= 0 ? 1 : deleteCount, placeholder).join("\n");
         count++;
     }
 
     if(e.ruleId === "unexpected-closing-slash" || e.ruleId === "end-tag-mismatch"){
-        const {start, end} = e.position
-        const startIndex = start.line - 1
-        const endIndex = end.line - 1
-        replaceMap[placeholder] = docArr.splice(startIndex, endIndex, placeholder).join("\n");
+        const {startIndex, endIndex} = findEmptyStringIndices(docArr, errorIndex, true)
+        const deleteCount = endIndex - startIndex + 1
+        replaceMap[placeholder] = docArr.splice(startIndex, deleteCount <= 0 ? 1 : deleteCount, placeholder).join("\n");
         count++;
     }
 
@@ -175,7 +176,7 @@ class MdxProcessor extends MdProcessor {
 
     getElementFromConvertHastToSegment(node: LayoutNode, isNodeList: boolean, convertNode: any): any {
         if (node.type === "element" ||
-            node.type === "yaml" ||
+            // node.type === "yaml" ||
             node.type === "mdxjsEsm" ||
             node.type === "mdxJsxFlowElement" ||
             node.type === "mdxFlowExpression" ||
