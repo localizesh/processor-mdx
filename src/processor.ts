@@ -11,6 +11,8 @@ import gfm from "remark-gfm";
 import {MdastRoot} from "rehype-remark/lib";
 import {visitParents} from "unist-util-visit-parents";
 import {deleteFields} from "./utils/deleteFields.js";
+import {getTagNameWithAttributes} from "./utils/getTagNameWithAttributes.js";
+import {getFlatChildren} from "./utils/getFlatChildren.js";
 type MdastNodes = import('mdast').Nodes;
 
 let replaceMap: any = {}
@@ -95,6 +97,10 @@ const errorHandler = (e: any, doc: string) => {
     return docArr.join("\n")
 }
 
+const HTML_SIMPLE_TAG: string[] = ["html", "aside", "blockquote", "body", "dl", "details", "div", "figure", "footer", "head", "header", "iframe", "noscript", "object", "ol", "q", "ruby", "samp", "script", "section", "style", "table", "template", "ul"];
+const AVOID_HTML_TYPE: string = "html!";
+const AVOID_HTML_TAGS: string[] = ["iframe", "html"];
+
 class MdxProcessor extends MdProcessor {
     constructor(context: Context) {
         super(context)
@@ -147,11 +153,52 @@ class MdxProcessor extends MdProcessor {
             children: h.all(node)
         });
 
+        const mdxParagraphHandler = (h: State, node: any) => {
+            visitParents(node, { type: "mdxJsxTextElement" }, (child: any, parent) => {
+                const tag: string = getTagNameWithAttributes(child);
+
+                if (HTML_SIMPLE_TAG.includes(child.name)) {
+                    node.type = AVOID_HTML_TAGS.includes(child.name) ? AVOID_HTML_TYPE : "raw";
+                    child.value = `${tag}${child.children[0].value}</${child.name}>`;
+
+                    delete child.attributes;
+                    delete child.name;
+                    delete child.type;
+                } else {
+                    child.children = [{
+                      type: "html",
+                      marker: "html",
+                      value: `${tag}`
+                    }, ...child.children, {
+                      type: "html",
+                      marker: "html",
+                      value: `</${child.name}>`
+                    }];
+
+                    delete child.attributes;
+                    delete child.name;
+                }
+            });
+
+            if (node.type === AVOID_HTML_TYPE || node.type === "raw") {
+                node.value = node.children.map((child: any) => child.value).join("");
+                delete node.children;
+
+                return node;
+            } else {
+                node.children = getFlatChildren(node.children).flat(Infinity);
+
+                return this.mdParagraphHandler(h, node, this.mdast);
+            }
+        };
+
         this.addMdastToHastHandler({
             mdxjsEsm: mdxHandler,
             mdxJsxFlowElement: mdxHandler,
             mdxFlowExpression: mdxHandler,
-            mdxTextExpression: mdxHandler
+            mdxTextExpression: mdxHandler,
+            paragraph: mdxParagraphHandler,
+            heading: mdxParagraphHandler
         });
         this.addPassThroughTypes(["mdxJsxFlowElement", "mdxjsEsm", "mdxFlowExpression", "mdxTextExpression"])
 
