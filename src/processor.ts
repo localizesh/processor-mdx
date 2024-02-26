@@ -15,6 +15,10 @@ import {getTagNameWithAttributes} from "./utils/getTagNameWithAttributes.js";
 import {getFlatChildren} from "./utils/getFlatChildren.js";
 type MdastNodes = import('mdast').Nodes;
 
+const HTML_SIMPLE_TAG: string[] = ["html", "aside", "blockquote", "body", "dl", "details", "div", "figure", "footer", "head", "header", "iframe", "noscript", "object", "ol", "q", "ruby", "samp", "script", "section", "style", "table", "template", "ul"];
+const AVOID_HTML_TYPE: string = "html!";
+const AVOID_HTML_TAGS: string[] = ["iframe", "html"];
+
 let replaceMap: any = {}
 let count: number = 1
 
@@ -97,16 +101,12 @@ const errorHandler = (e: any, doc: string) => {
     return docArr.join("\n")
 }
 
-const HTML_SIMPLE_TAG: string[] = ["html", "aside", "blockquote", "body", "dl", "details", "div", "figure", "footer", "head", "header", "iframe", "noscript", "object", "ol", "q", "ruby", "samp", "script", "section", "style", "table", "template", "ul"];
-const AVOID_HTML_TYPE: string = "html!";
-const AVOID_HTML_TAGS: string[] = ["iframe", "html"];
-
 class MdxProcessor extends MdProcessor {
     constructor(context: Context) {
         super(context)
     }
 
-    parseMarkdownToMdast(doc: string): MdastRoot {
+    parseMarkdownToMdast(doc: string): { mdast: MdastRoot, newDoc: string } {
         let mdast: MdastRoot
 
         try {
@@ -117,24 +117,41 @@ class MdxProcessor extends MdProcessor {
                 .use(gfm)
                 .parse(doc);
         } catch (e: any) {
-            const newDoc = errorHandler(e, doc)
+            const newDoc: string = errorHandler(e, doc)
 
-            mdast = this.parseMarkdownToMdast(newDoc)
+            return this.parseMarkdownToMdast(newDoc)
         }
 
-        visitParents(mdast, (node: any) => node.type === "text", (node: any, parent: any)=> {
-            const value = node.value
-            const keys = Object.keys(replaceMap)
+        const replacePlaceholders = (): void => {
+            visitParents(mdast, (node: any) => node.type === "text", (node: any, parent: any)=> {
+                const keys = Object.keys(replaceMap)
 
-            keys.forEach((key)=>{
-                if(value.includes(key)){
-                    const source = replaceMap[key]
-                    node.value = value.replace(key, source)
-                }
+                keys.forEach((key)=>{
+                    if(node.value.includes(key)){
+                        const source = replaceMap[key]
+                        const lengthDiff: number = source.length - key.length
+
+                        node.value = node.value.replace(key, source)
+                        doc = doc.replace(key, source)
+
+                        visitParents(mdast, (child: any) => "position" in child, (child: any, _: any)=> {
+                            if (child.position.start.offset >= node.position.end.offset) {
+                              child.position.start.offset += lengthDiff
+                              child.position.end.offset += lengthDiff
+                            }
+                        })
+
+                        delete replaceMap[key]
+                    }
+                })
             })
-        })
+        }
 
-        return mdast
+        while (Object.keys(replaceMap).length > 0) {
+            replacePlaceholders()
+        }
+
+        return { mdast, newDoc: doc }
     }
 
     parseMdastToMarkdown(mdast: MdastRoot): string {
