@@ -14,7 +14,7 @@
     "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizeio/md/patches"
   },
   "dependencies": {
-    "remark-mdx": "^2.3.0"
+    "remark-mdx": "^3.0.1"
   },
   "devDependencies": {
     "@types/chai": "^4.3.12",
