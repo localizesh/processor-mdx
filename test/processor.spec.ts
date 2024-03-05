@@ -17,13 +17,27 @@ function processAndCompare(filename: string) {
   const outDocStructure = processor.parse(outDoc);
   const outDocStructureStr = JSON.stringify(outDocStructure);
 
-  // assert.equal(outDoc, inDoc);
   assert.equal(outDocStructureStr, docStr);
+  console.log(filename);
+}
+
+
+function processAndCompareWithExpected(filename: string) {
+  const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' });
+  const inDocExpected = fs.readFileSync(path.join('test', 'expected', filename), { encoding: 'utf-8' });
+
+
+  const doc = processor.parse(inDoc);
+  const outDoc = processor.stringify(doc);
+
+  assert.equal(outDoc, inDocExpected);
   console.log(filename);
 }
 
 describe('MdProcessorTest', function() {
   it('documents should be equal', function() {
+    processAndCompareWithExpected('blockquotes.mdx');
+    processAndCompareWithExpected('1index.mdx');
     processAndCompare('15.10.mdx');
     processAndCompare('docs_style.mdx');
     processAndCompare('headings.mdx');
