@@ -1,7 +1,7 @@
-import MdProcessor from "@localizeio/md";
+import MdProcessor from "@localizesh/processor-md";
 import parse from "remark-parse";
 import stringify from "remark-stringify";
-import {Context, Document, LayoutNode} from "@localizeio/lib";
+import {Document, LayoutElement} from "@localizesh/sdk";
 import {all as toMdastAll, H, Node} from "hast-util-to-mdast/lib/all.js";
 import {State} from "mdast-util-to-hast/lib/state";
 import {unified} from "unified";
@@ -102,10 +102,6 @@ const errorHandler = (e: any, doc: string) => {
 }
 
 class MdxProcessor extends MdProcessor {
-    constructor(context: Context) {
-        super(context)
-    }
-
     parseMarkdownToMdast(doc: string): { mdast: MdastRoot, newDoc: string } {
         let mdast: MdastRoot
 
@@ -238,9 +234,8 @@ class MdxProcessor extends MdProcessor {
         return super.stringify(data);
     }
 
-    getElementFromConvertHastToSegment(node: LayoutNode, isNodeList: boolean, convertNode: any): any {
+    getElementFromConvertHastToSegment(node: LayoutElement, isNodeList: boolean, convertNode: any): any {
         if (node.type === "element" ||
-            // node.type === "yaml" ||
             node.type === "mdxjsEsm" ||
             node.type === "mdxJsxFlowElement" ||
             node.type === "mdxFlowExpression" ||

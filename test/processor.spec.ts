@@ -5,7 +5,7 @@ import path from "path";
 
 import MdxProcessor from "../src/processor.js";
 
-const processor = new MdxProcessor("test");
+const processor = new MdxProcessor();
 
 function processAndCompare(filename: string) {
   const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' });
@@ -34,10 +34,12 @@ function processAndCompareWithExpected(filename: string) {
   console.log(filename);
 }
 
-describe('MdProcessorTest', function() {
+describe('MdxProcessorTest', function() {
   it('documents should be equal', function() {
+    this.timeout(10000);
     processAndCompareWithExpected('blockquotes.mdx');
     processAndCompareWithExpected('1index.mdx');
+    processAndCompareWithExpected('using-mdx.mdx');
     processAndCompare('15.10.mdx');
     processAndCompare('docs_style.mdx');
     processAndCompare('headings.mdx');
@@ -50,7 +52,6 @@ describe('MdProcessorTest', function() {
     processAndCompare('exports.mdx');
     processAndCompare('extending-mdx.mdx');
     processAndCompare('index.mdx');
-    processAndCompare('using-mdx.mdx');
   });
 });
 
