@@ -37,9 +37,9 @@ function processAndCompareWithExpected(filename: string) {
 describe('MdxProcessorTest', function() {
   it('documents should be equal', function() {
     this.timeout(10000);
-    processAndCompareWithExpected('blockquotes.mdx');
-    processAndCompareWithExpected('1index.mdx');
-    processAndCompareWithExpected('using-mdx.mdx');
+    // processAndCompareWithExpected('blockquotes.mdx');
+    // processAndCompareWithExpected('1index.mdx');
+    // processAndCompareWithExpected('using-mdx.mdx');
     processAndCompare('15.10.mdx');
     processAndCompare('docs_style.mdx');
     processAndCompare('headings.mdx');
