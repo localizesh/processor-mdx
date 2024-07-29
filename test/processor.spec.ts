@@ -37,20 +37,20 @@ function processAndCompareWithExpected(filename: string) {
 describe('MdxProcessorTest', function() {
   it('documents should be equal', function() {
     this.timeout(10000);
-    // processAndCompareWithExpected('blockquotes.mdx');
-    // processAndCompareWithExpected('1index.mdx');
-    // processAndCompareWithExpected('using-mdx.mdx');
-    // processAndCompare('15.10.mdx');
-    // processAndCompare('docs_style.mdx');
+    processAndCompareWithExpected('blockquotes.mdx');
+    processAndCompareWithExpected('1index.mdx');
+    processAndCompareWithExpected('using-mdx.mdx');
+    processAndCompare('15.10.mdx');
+    processAndCompareWithExpected('docs_style.mdx');
     processAndCompare('headings.mdx');
     processAndCompare('markdown-cheat-sheet.mdx');
-    processAndCompare('overview.mdx');
-    processAndCompare('test2.mdx');
+    processAndCompareWithExpected('overview.mdx');
+    processAndCompareWithExpected('test2.mdx');
     processAndCompare('tff_for_research.mdx');
     processAndCompare('sigs.mdx');
-    processAndCompare('mdx-simple-test.mdx');
+    processAndCompareWithExpected('mdx-simple-test.mdx');
     processAndCompare('exports.mdx');
-    processAndCompare('extending-mdx.mdx');
+    processAndCompareWithExpected('extending-mdx.mdx');
     processAndCompare('index.mdx');
   });
 });

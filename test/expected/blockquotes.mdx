@@ -4,7 +4,7 @@ syntax-id: blockquotes
 syntax-summary: "> blockquote"
 description: "To create a blockquote, add a `>` in front of a paragraph."
 examples:
-  - markdown: "> Dorothy followed her through many of the beautiful rooms in  her castle."
+  - markdown: "> Dorothy followed her through many of the beautiful rooms in her castle."
     html: "<blockquote><p>Dorothy followed her through many of the beautiful rooms in her castle.</p></blockquote>"
 additional-examples:
   - name: "Blockquotes with Multiple Paragraphs"
@@ -13,7 +13,6 @@ additional-examples:
       > Dorothy followed her through many of the beautiful rooms in her castle.
       >
       > The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-      
     html: "<blockquote><p>Dorothy followed her through many of the beautiful rooms in her castle.</p><p>The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.</p></blockquote>"
   - name: "Nested Blockquotes"
     description: "Blockquotes can be nested. Add a `>>` in front of the paragraph you want to nest."
@@ -21,7 +20,6 @@ additional-examples:
       > Dorothy followed her through many of the beautiful rooms in her castle.
       >
       >> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-      
     html: "<blockquote><p>Dorothy followed her through many of the beautiful rooms in her castle.</p><blockquote><p>The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.</p></blockquote></blockquote>"
   - name: "Blockquotes with Other Elements"
     description: "Blockquotes can contain other Markdown formatted elements. Not all elements can be used — you''ll need to experiment to see which ones work."
@@ -31,8 +29,7 @@ additional-examples:
       > - Revenue was off the chart.
       > - Profits were higher than ever.
       >
-      >  *Everything* is going according to **plan**.
-      
+      > *Everything* is going according to **plan**.
     html: "<blockquote><h3>The quarterly results look great!</h3><ul><li>Revenue was off the chart.</li><li>Profits were higher than ever.</li></ul><p><em>Everything</em> is going according to <strong>plan</strong>.</p></blockquote>"
 ---
 
@@ -104,31 +101,4 @@ The rendered output looks like this:
 
 For compatibility, put blank lines before and after blockquotes.
 
-<table class="table table-bordered">
-  <thead class="thead-light">
-    <tr>
-      <th>✅  Do this</th>
-      <th>❌  Don't do this</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code class="highlighter-rouge">
-        Try to put a blank line before...<br><br>
-
-        > This is a blockquote<br><br>
-
-        ...and after a blockquote.
-        </code>
-      </td>
-      <td>
-        <code class="highlighter-rouge">
-        Without blank lines, this might not look right.<br>
-        > This is a blockquote<br>
-        Don't do this!
-        </code>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<table class="table table-bordered"><thead class="thead-light"><tr><th>✅  Do this</th><th>❌  Don't do this</th></tr></thead><tbody><tr><td><code class="highlighter-rouge">Try to put a blank line before...<br><br>> This is a blockquote<br><br>...and after a blockquote.</code></td><td><code class="highlighter-rouge">Without blank lines, this might not look right.<br>> This is a blockquote<br>Don't do this!</code></td></tr></tbody></table>

@@ -132,8 +132,8 @@ class MdxProcessor extends MdProcessor {
 
                         visitParents(mdast, (child: any) => "position" in child, (child: any, _: any)=> {
                             if (child.position.start.offset >= node.position.end.offset) {
-                              child.position.start.offset += lengthDiff
-                              child.position.end.offset += lengthDiff
+                                child.position.start.offset += lengthDiff
+                                child.position.end.offset += lengthDiff
                             }
                         })
 
@@ -179,13 +179,13 @@ class MdxProcessor extends MdProcessor {
                     delete child.type;
                 } else {
                     child.children = [{
-                      type: "html",
-                      marker: "html",
-                      value: `${tag}`
+                        type: "html",
+                        marker: "html",
+                        value: `${tag}`
                     }, ...child.children, {
-                      type: "html",
-                      marker: "html",
-                      value: `</${child.name}>`
+                        type: "html",
+                        marker: "html",
+                        value: `</${child.name}>`
                     }];
 
                     delete child.attributes;
@@ -230,7 +230,7 @@ class MdxProcessor extends MdProcessor {
             mdxFlowExpression: mdxHandler,
             mdxTextExpression: mdxHandler,
         });
-        
+
         return super.stringify(data);
     }
 
