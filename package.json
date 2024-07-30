@@ -1,6 +1,6 @@
 {
-  "name": "@localizeio/mdx",
-  "repository": "localizeio/mdx",
+  "name": "@localizesh/processor-mdx",
+  "repository": "localizesh/processor-mdx",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,23 +11,22 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc --project tsconfig.build.json",
     "test": "mocha",
-    "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizeio/md/patches"
+    "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches"
   },
   "dependencies": {
     "@localizesh/processor-md": "^0.1.2",
-    "@localizesh/sdk": "^0.2.0",
     "remark-mdx": "^2.3.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.16",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.7",
     "chai": "^5.1.1",
-    "mocha": "^10.3.0",
+    "mocha": "^10.7.0",
     "patch-package-ignore-missing": "^7.0.1-2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.5.4"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+  "peerDependencies": {
+    "@localizesh/sdk": "^0.2.0"
   }
 }
