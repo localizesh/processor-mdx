@@ -1,7 +1,7 @@
-import MdProcessor from "@localizeio/md";
+import MdProcessor from "@localizesh/processor-md";
 import parse from "remark-parse";
 import stringify from "remark-stringify";
-import {Context, Document, LayoutNode} from "@localizeio/lib";
+import {Document, LayoutElement} from "@localizesh/sdk";
 import {all as toMdastAll, H, Node} from "hast-util-to-mdast/lib/all.js";
 import {State} from "mdast-util-to-hast/lib/state";
 import {unified} from "unified";
@@ -102,10 +102,6 @@ const errorHandler = (e: any, doc: string) => {
 }
 
 class MdxProcessor extends MdProcessor {
-    constructor(context: Context) {
-        super(context)
-    }
-
     parseMarkdownToMdast(doc: string): { mdast: MdastRoot, newDoc: string } {
         let mdast: MdastRoot
 
@@ -136,8 +132,8 @@ class MdxProcessor extends MdProcessor {
 
                         visitParents(mdast, (child: any) => "position" in child, (child: any, _: any)=> {
                             if (child.position.start.offset >= node.position.end.offset) {
-                              child.position.start.offset += lengthDiff
-                              child.position.end.offset += lengthDiff
+                                child.position.start.offset += lengthDiff
+                                child.position.end.offset += lengthDiff
                             }
                         })
 
@@ -183,13 +179,13 @@ class MdxProcessor extends MdProcessor {
                     delete child.type;
                 } else {
                     child.children = [{
-                      type: "html",
-                      marker: "html",
-                      value: `${tag}`
+                        type: "html",
+                        marker: "html",
+                        value: `${tag}`
                     }, ...child.children, {
-                      type: "html",
-                      marker: "html",
-                      value: `</${child.name}>`
+                        type: "html",
+                        marker: "html",
+                        value: `</${child.name}>`
                     }];
 
                     delete child.attributes;
@@ -234,13 +230,12 @@ class MdxProcessor extends MdProcessor {
             mdxFlowExpression: mdxHandler,
             mdxTextExpression: mdxHandler,
         });
-        
+
         return super.stringify(data);
     }
 
-    getElementFromConvertHastToSegment(node: LayoutNode, isNodeList: boolean, convertNode: any): any {
+    getElementFromConvertHastToSegment(node: LayoutElement, isNodeList: boolean, convertNode: any): any {
         if (node.type === "element" ||
-            // node.type === "yaml" ||
             node.type === "mdxjsEsm" ||
             node.type === "mdxJsxFlowElement" ||
             node.type === "mdxFlowExpression" ||

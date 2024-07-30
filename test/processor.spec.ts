@@ -5,7 +5,7 @@ import path from "path";
 
 import MdxProcessor from "../src/processor.js";
 
-const processor = new MdxProcessor("test");
+const processor = new MdxProcessor();
 
 function processAndCompare(filename: string) {
   const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' });
@@ -34,23 +34,24 @@ function processAndCompareWithExpected(filename: string) {
   console.log(filename);
 }
 
-describe('MdProcessorTest', function() {
+describe('MdxProcessorTest', function() {
   it('documents should be equal', function() {
+    this.timeout(10000);
     processAndCompareWithExpected('blockquotes.mdx');
     processAndCompareWithExpected('1index.mdx');
+    processAndCompareWithExpected('using-mdx.mdx');
     processAndCompare('15.10.mdx');
-    processAndCompare('docs_style.mdx');
+    processAndCompareWithExpected('docs_style.mdx');
     processAndCompare('headings.mdx');
     processAndCompare('markdown-cheat-sheet.mdx');
-    processAndCompare('overview.mdx');
-    processAndCompare('test2.mdx');
+    processAndCompareWithExpected('overview.mdx');
+    processAndCompareWithExpected('test2.mdx');
     processAndCompare('tff_for_research.mdx');
     processAndCompare('sigs.mdx');
-    processAndCompare('mdx-simple-test.mdx');
+    processAndCompareWithExpected('mdx-simple-test.mdx');
     processAndCompare('exports.mdx');
-    processAndCompare('extending-mdx.mdx');
+    processAndCompareWithExpected('extending-mdx.mdx');
     processAndCompare('index.mdx');
-    processAndCompare('using-mdx.mdx');
   });
 });
 

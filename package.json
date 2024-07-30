@@ -14,20 +14,18 @@
     "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizeio/md/patches"
   },
   "dependencies": {
+    "@localizesh/processor-md": "^0.1.2",
+    "@localizesh/sdk": "^0.2.0",
     "remark-mdx": "^2.3.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.12",
+    "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.6",
-    "chai": "^5.1.0",
+    "chai": "^5.1.1",
     "mocha": "^10.3.0",
     "patch-package-ignore-missing": "^7.0.1-2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
-  },
-  "peerDependencies": {
-    "@localizeio/lib": "^0.3.0",
-    "@localizeio/md": "^0.14.7"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
