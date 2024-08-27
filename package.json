@@ -18,7 +18,7 @@
     "remark-mdx": "^2.3.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.16",
+    "@types/chai": "^4.3.18",
     "@types/mocha": "^10.0.7",
     "chai": "^5.1.1",
     "mocha": "^10.7.0",
