@@ -2,8 +2,9 @@ import MdProcessor from "@localizesh/processor-md";
 import parse from "remark-parse";
 import stringify from "remark-stringify";
 import {Document, LayoutElement} from "@localizesh/sdk";
-import {all as toMdastAll, H, Node} from "hast-util-to-mdast/lib/all.js";
-import {State} from "mdast-util-to-hast/lib/state";
+import {State as H} from "hast-util-to-mdast";
+import {Parents as HastParents} from "hast";
+import {State} from "mdast-util-to-hast";
 import {unified} from "unified";
 import mdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
@@ -219,9 +220,9 @@ class MdxProcessor extends MdProcessor {
     }
 
     public stringify(data: Document): string {
-        const mdxHandler = (h: H, node: Node) => ({
+        const mdxHandler = (h: H, node: HastParents) => ({
             ...node,
-            children: toMdastAll(h, node),
+            children: h.all(node),
         });
 
         this.addHastToMdastHandler({
