@@ -14,7 +14,7 @@
     "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches"
   },
   "dependencies": {
-    "@localizesh/processor-md": "^0.1.7",
+    "@localizesh/processor-md": "^0.2.0",
     "remark-mdx": "^2.3.0"
   },
   "devDependencies": {
