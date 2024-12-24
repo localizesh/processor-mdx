@@ -121,7 +121,7 @@ class MdxProcessor extends MdProcessor {
     }
 
     const replacePlaceholders = (): void => {
-      visitParents(mdast, (node: any) => node.type === "text", (node: any, parent: any) => {
+      visitParents(mdast, (node: any) => node.type === "text", (node: any) => {
         const keys = Object.keys(replaceMap)
 
         keys.forEach((key) => {
@@ -163,13 +163,16 @@ class MdxProcessor extends MdProcessor {
   }
 
   public parse(doc: string): Document {
-    const mdxHandler = (h: State, node: MdastNodes) => ({
-      ...node,
-      children: h.all(node)
-    });
+    const mdxHandler = (h: State, node: MdastNodes) => {
+
+      return {
+        ...node,
+        children: h.all(node)
+      }
+    };
 
     const mdxParagraphHandler = (h: State, node: any) => {
-      visitParents(node, {type: "mdxJsxTextElement"}, (child: any, parent) => {
+      visitParents(node, {type: "mdxJsxTextElement"}, (child: any) => {
         const tag: string = getTagNameWithAttributes(child);
 
         if (HTML_SIMPLE_TAG.includes(child.name)) {
@@ -222,6 +225,7 @@ class MdxProcessor extends MdProcessor {
           }
         ]
       };
+
     };
 
     this.addMdastToHastHandler({}, {
@@ -238,10 +242,13 @@ class MdxProcessor extends MdProcessor {
   }
 
   public stringify(data: Document): string {
-    const mdxHandler = (h: H, node: HastParents) => ({
-      ...node,
-      children: h.all(node),
-    });
+    const mdxHandler = (h: H, node: HastParents) => {
+
+      return {
+        ...node,
+        children: h.all(node),
+      }
+    };
 
     this.addHastToMdastHandler({}, {
       mdxjsEsm: mdxHandler,
@@ -273,7 +280,7 @@ class MdxProcessor extends MdProcessor {
   segmentsToHast(data: Document): any {
     const layout = super.segmentsToHast(data);
 
-    visitParents(layout, {tagName: "mdxTextExpression"}, (node: any, parent) => {
+    visitParents(layout, {tagName: "mdxTextExpression"}, (node: any) => {
       node.type = node.tagName
       node.value = node.children[0].value
       node.data = node.properties.data
