@@ -11,11 +11,11 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc --project tsconfig.build.json",
     "test": "mocha",
-    "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches"
+    "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches && patch-package-ignore-missing --ignore-missing"
   },
   "dependencies": {
-    "@localizesh/processor-md": "^0.1.7",
-    "remark-mdx": "^2.3.0"
+    "@localizesh/processor-md": "^0.2.1",
+    "remark-mdx": "^3.1.0"
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",

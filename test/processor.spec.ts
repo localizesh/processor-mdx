@@ -9,7 +9,7 @@ import MdxProcessor from "../src/processor.js";
 const processor = new MdxProcessor();
 
 function processAndCompare(filename: string) {
-  const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' });
+  const inDoc = fs.readFileSync(path.join('test', 'fixtures', filename), {encoding: 'utf-8'});
 
   const doc = processor.parse(inDoc);
   const docStr = JSON.stringify(doc);
@@ -24,8 +24,8 @@ function processAndCompare(filename: string) {
 
 
 function processAndCompareWithExpected(filename: string) {
-  const inDoc = eol.lf(fs.readFileSync(path.join('test', 'fixtures', filename), { encoding: 'utf-8' }));
-  const inDocExpected = eol.lf(fs.readFileSync(path.join('test', 'expected', filename), { encoding: 'utf-8' }));
+  const inDoc = eol.lf(fs.readFileSync(path.join('test', 'fixtures', filename), {encoding: 'utf-8'}));
+  const inDocExpected = eol.lf(fs.readFileSync(path.join('test', 'expected', filename), {encoding: 'utf-8'}));
 
 
   const doc = processor.parse(inDoc);
@@ -35,8 +35,8 @@ function processAndCompareWithExpected(filename: string) {
   console.log(filename);
 }
 
-describe('MdxProcessorTest', function() {
-  it('documents should be equal', function() {
+describe('MdxProcessorTest', function () {
+  it('documents should be equal', function () {
     this.timeout(10000);
     processAndCompareWithExpected('blockquotes.mdx');
     processAndCompareWithExpected('1index.mdx');

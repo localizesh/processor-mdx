@@ -8,6 +8,7 @@ export const info = {
   modified: new Date('2022-06-17')
 }
 
+
 # Using MDX
 
 This article explains how to use MDX files in your project.
@@ -210,7 +211,7 @@ import {Box, Heading} from 'rebass'
 
 MDX using imported components!
 
-    <Box>
+<Box>
   <Heading>Here’s a heading</Heading>
 </Box>
 ```
@@ -276,7 +277,7 @@ There is one special component: the layout.
 If it is defined, it’s used to wrap all content.
 A layout can be defined from within MDX using a default export:
 
-```mdx 
+```mdx
 export default function Layout({children}) {
   return <main>{children}</main>;
 }
@@ -286,7 +287,9 @@ All the things.
 
 The layout can also be imported and *then* exported with an `export … from`:
 
+
 {/* Note: `language` because theme in VS Code is broken. */}
+
 
 ```tsx language="mdx"
 export {Layout as default} from './components.js'
@@ -359,7 +362,7 @@ Set it up like so:
    Use it to wrap your top-most MDX content component and pass it your
    `components` instead:
 
-```diff 
+```diff
  import React from 'react'
  import ReactDom from 'react-dom'
  import Post from './post.mdx' // Assumes an integration is used to compile MDX -> JS.
@@ -383,7 +386,7 @@ Set it up like so:
 
 Now you can remove the explicit and verbose component passing:
 
-```diff 
+```diff
  import License from './license.md' // Assumes an integration is used to compile MDX -> JS.
  import Contributing from './docs/contributing.mdx'
 
@@ -401,7 +404,7 @@ Now you can remove the explicit and verbose component passing:
 When `MDXProvider`s are nested, their components are merged.
 Take this example:
 
-```tsx 
+```tsx
 <>
   <MDXProvider components={{h1: Component1, h2: Component2}}>
     <MDXProvider components={{h2: Component3, h3: Component4}}>
@@ -419,7 +422,7 @@ It’s given the current context `components` and what it returns will be used
 instead.
 In this example the current context components are discarded:
 
-```tsx 
+```tsx
 <>
   <MDXProvider components={{h1: Component1, h2: Component2}}>
     <MDXProvider components={() => ({h2: Component3, h3: Component4})}>

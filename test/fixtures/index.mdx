@@ -14,15 +14,15 @@ to extend them.
 Reading through these should give you a good understanding of MDX.
 
 {
-  (() => {
-    const category = props.navTree.children.find(
-      item => item.name === '/docs/'
-    )
+(() => {
+ const category = props.navTree.children.find(
+ item => item.name === '/docs/'
+)
 
-    return (
-      <nav>
-        <NavGroup items={category.children} includeDescription />
-      </nav>
-    )
-  })()
+return (
+ <nav>
+  <NavGroup items={category.children} includeDescription />
+ </nav>
+)
+})()
 }
