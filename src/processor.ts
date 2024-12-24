@@ -222,7 +222,7 @@ class MdxProcessor extends MdProcessor {
             ]
           };
         };
-        //@ts-ignore
+
         this.addMdastToHastHandler({}, {
             mdxjsEsm: mdxHandler,
             mdxJsxFlowElement: jsxFlowElementHandler,
@@ -242,7 +242,6 @@ class MdxProcessor extends MdProcessor {
             children: h.all(node),
         });
 
-        //@ts-ignore
         this.addHastToMdastHandler({}, {
             mdxjsEsm: mdxHandler,
             mdxJsxFlowElement: mdxHandler,
