@@ -1,0 +1,18 @@
+diff --git a/node_modules/mdast-util-mdx-expression/lib/index.js b/node_modules/mdast-util-mdx-expression/lib/index.js
+index 53f09cb..46b5823 100644
+--- a/node_modules/mdast-util-mdx-expression/lib/index.js
++++ b/node_modules/mdast-util-mdx-expression/lib/index.js
+@@ -80,7 +80,12 @@ function exitMdxExpression(token) {
+   const node = this.stack[this.stack.length - 1]
+   assert(node.type === 'mdxFlowExpression' || node.type === 'mdxTextExpression')
+   this.exit(token)
+-  node.value = value
++
++  if (token.estree?.comments[0]?.type === "Block" || token.estree?.type === "Program") {
++    node.value = `{${value}}`
++  } else {
++    node.value = value
++  }
+ 
+   if (estree) {
+     node.data = {estree}

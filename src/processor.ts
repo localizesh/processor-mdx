@@ -110,7 +110,7 @@ class MdxProcessor extends MdProcessor {
             mdast = unified()
                 .use(parse)
                 .use(mdx)
-                .use(remarkFrontmatter, ["yaml"])
+                .use(remarkFrontmatter, ["yaml", "toml"])
                 .use(gfm)
                 .parse(doc);
         } catch (e: any) {
@@ -206,9 +206,26 @@ class MdxProcessor extends MdProcessor {
             }
         };
 
-        this.addMdastToHastHandler({
+        const jsxFlowElementHandler = (h: H, node: HastParents) => {
+
+          return {
+            type: "element",
+            tagName: "p",
+            properties: {},
+            children: [
+              {
+                type: "text",
+                value: this.parseMdastToMarkdown(
+                  {type: "root", children: [node]} as MdastRoot
+                )
+              }
+            ]
+          };
+        };
+        //@ts-ignore
+        this.addMdastToHastHandler({}, {
             mdxjsEsm: mdxHandler,
-            mdxJsxFlowElement: mdxHandler,
+            mdxJsxFlowElement: jsxFlowElementHandler,
             mdxFlowExpression: mdxHandler,
             mdxTextExpression: mdxHandler,
             paragraph: mdxParagraphHandler,
@@ -225,7 +242,8 @@ class MdxProcessor extends MdProcessor {
             children: h.all(node),
         });
 
-        this.addHastToMdastHandler({
+        //@ts-ignore
+        this.addHastToMdastHandler({}, {
             mdxjsEsm: mdxHandler,
             mdxJsxFlowElement: mdxHandler,
             mdxFlowExpression: mdxHandler,
