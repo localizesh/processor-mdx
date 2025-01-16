@@ -210,7 +210,7 @@ class MdxProcessor extends MdProcessor {
       }
     };
 
-    const jsxFlowElementHandler = (h: H, node: HastParents) => {
+    const flowHandler = (h: H, node: HastParents) => {
 
       return {
         type: "element",
@@ -230,8 +230,8 @@ class MdxProcessor extends MdProcessor {
 
     this.addMdastToHastHandler({}, {
       mdxjsEsm: mdxHandler,
-      mdxJsxFlowElement: jsxFlowElementHandler,
-      mdxFlowExpression: mdxHandler,
+      mdxJsxFlowElement: flowHandler,
+      mdxFlowExpression: flowHandler,
       mdxTextExpression: mdxHandler,
       paragraph: mdxParagraphHandler,
       heading: mdxParagraphHandler
