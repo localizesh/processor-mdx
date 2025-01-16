@@ -1,7 +1,7 @@
 import MdProcessor from "@localizesh/processor-md";
 import parse from "remark-parse";
 import stringify from "remark-stringify";
-import {Document, LayoutElement} from "@localizesh/sdk";
+import {Document, LayoutElement, LayoutRoot} from "@localizesh/sdk";
 import {State as H} from "hast-util-to-mdast";
 import {Parents as HastParents} from "hast";
 import {State} from "mdast-util-to-hast";
@@ -221,7 +221,7 @@ class MdxProcessor extends MdProcessor {
             type: "text",
             value: this.parseMdastToMarkdown(
               {type: "root", children: [node]} as MdastRoot
-            )
+            ).trim()
           }
         ]
       };
@@ -242,6 +242,9 @@ class MdxProcessor extends MdProcessor {
   }
 
   public stringify(data: Document): string {
+
+    this.removeExtraLineBreaks(data.layout);
+
     const mdxHandler = (h: H, node: HastParents) => {
 
       return {
@@ -261,11 +264,7 @@ class MdxProcessor extends MdProcessor {
   }
 
   getElementFromConvertHastToSegment(node: LayoutElement, isNodeList: boolean, convertNode: any): any {
-    if (node.type === "element" ||
-      node.type === "mdxjsEsm" ||
-      node.type === "mdxJsxFlowElement" ||
-      node.type === "mdxFlowExpression" ||
-      node.type === "mdxTextExpression") {
+    if (node.type === "element" || this.isMdxNode(node)) {
 
       deleteFields(node);
       const children = node.children.map(convertNode);
@@ -291,6 +290,21 @@ class MdxProcessor extends MdProcessor {
     });
 
     return layout;
+  }
+
+  isMdxNode(node: any) {
+    return node.type === "mdxjsEsm" ||
+      node.type === "mdxJsxFlowElement" ||
+      node.type === "mdxFlowExpression" ||
+      node.type === "mdxTextExpression"
+  }
+
+  removeExtraLineBreaks(layout: LayoutRoot) {
+    visitParents(layout,
+      (node: any, _: any, parent: any) => node.type === "text" && parent?.type === "root",
+      (node: any) => {
+        if (!node?.value?.trim()) node.value = "";
+      })
   }
 }
 

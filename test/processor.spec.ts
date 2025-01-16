@@ -41,6 +41,7 @@ describe('MdxProcessorTest', function () {
     processAndCompareWithExpected('blockquotes.mdx');
     processAndCompareWithExpected('1index.mdx');
     processAndCompareWithExpected('using-mdx.mdx');
+    processAndCompare('edge.mdx');
     processAndCompare('15.10.mdx');
     processAndCompare('docs_style.mdx');
     processAndCompare('headings.mdx');
