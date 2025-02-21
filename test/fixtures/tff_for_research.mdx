@@ -23,14 +23,12 @@ types of logic.
     references, and can be re-used outside of TFF. For example, the
     [client training loop in Federated Averaging](https://github.com/tensorflow/federated/blob/main/tensorflow_federated/examples/simple_fedavg/simple_fedavg_tf.py#L184-L222)
     is implemented at this level.
-
 1.  TensorFlow Federated orchestration logic, which binds together the
     individual `tf.function`s from 1. by wrapping them as `tff.tf_computation`s
     and then orchestrating them using abstractions like
     `tff.federated_broadcast` and `tff.federated_mean` inside a
     `tff.federated_computation`. See, for example, this
     [orchestration for Federated Averaging](https://github.com/tensorflow/federated/blob/main/tensorflow_federated/examples/simple_fedavg/simple_fedavg_tff.py#L112-L140).
-
 1.  An outer driver script that simulates the control logic of a production FL
     system, selecting simulated clients from a dataset and then executing
     federated computations defined in 2. on those clients. For example,
@@ -53,37 +51,31 @@ Datasets include:
     A realistic text dataset for language modeling or supervised learning tasks,
     with 342,477 unique users with 135,818,730 examples (sentences) in the
     training set.
-
 *   [**Federated EMNIST**.](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/emnist/load_data)
     A federated pre-processing of the EMNIST character and digit dataset, where
     each client corresponds to a different writer. The full train set contains
     3400 users with 671,585 examples from 62 labels.
-
 *   [**Shakespeare**.](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/shakespeare/load_data)
     A smaller char-level text dataset based on the complete works of William
     Shakespeare. The data set consists of 715 users (characters of Shakespeare
     plays), where each example corresponds to a contiguous set of lines spoken
     by the character in a given play.
-
 *   [**CIFAR-100**.](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/cifar100/load_data)
     A federated partitioning of the CIFAR-100 dataset across 500 training
     clients and 100 test clients. Each client has 100 unique examples. The
     partitioning is done in a way to create more realistic heterogeneity between
     clients. For more details, see the
     [API](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/cifar100/load_data).
-
 *   [**Google Landmark v2 dataset**](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/gldv2/load_data)
     The dataset consists of photos of various world landmarks, with images
     grouped by photographer to achieve a federated partitioning of the data. Two
     flavors of dataset are available: a smaller dataset with 233 clients and
     23080 images, and a larger dataset with 1262 clients and 164172 images.
-
 *   [**CelebA**](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/celeba/load_data)
     A dataset of examples (image and facial attributes) of celebrity faces. The
     federated dataset has each celebrity's examples grouped together to form a
     client. There are 9343 clients, each with at least 5 examples. The dataset
     can be split into train and test groups either by clients or by examples.
-
 *   [**iNaturalist**](https://www.tensorflow.org/federated/api_docs/python/tff/simulation/datasets/inaturalist/load_data)
     A dataset consists of photos of various species. The dataset contains
     120,300 images for 1,203 species. Seven flavors of the dataset are
@@ -225,7 +217,6 @@ To explore and compare different personalization strategies, you can:
     starts from an initial model, trains and evaluates a personalized model
     using each client's local datasets. An example is given by
     [`build_personalize_fn`](https://github.com/tensorflow/federated/blob/main/tensorflow_federated/examples/personalization/p13n_utils.py).
-
 *   Define an `OrderedDict` that maps strategy names to the corresponding
     personalization strategies, and use it as the `personalize_fn_dict` argument
     in
@@ -242,7 +233,6 @@ federated learning, you can:
     [tutorial](https://www.tensorflow.org/federated/tutorials/federated_reconstruction_for_matrix_factorization)
     for a complete code example applying Federated Reconstruction and
     [follow-up exercises](https://www.tensorflow.org/federated/tutorials/federated_reconstruction_for_matrix_factorization#further_explorations).
-
 *   Create a partially local training process using
     [`tff.learning.reconstruction.build_training_process`](https://www.tensorflow.org/federated/api_docs/python/tff/learning/reconstruction/build_training_process),
     modifying `dataset_split_fn` to customize process behavior.
