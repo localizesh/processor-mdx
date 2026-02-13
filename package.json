@@ -18,20 +18,16 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc --project tsconfig.build.json",
-    "test": "vitest run",
-    "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@localizesh/processor-md": "^0.2.9",
-    "remark-mdx": "^3.1.0"
+    "@localizesh/processor-md": "^1.0.0",
+    "@localizesh/sdk": "^2.1.0",
+    "remark-mdx": "^3.1.1"
   },
   "devDependencies": {
     "eol": "^0.10.0",
-    "patch-package-ignore-missing": "^7.0.1-2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
-  },
-  "peerDependencies": {
-    "@localizesh/sdk": "^0.3.2"
   }
 }

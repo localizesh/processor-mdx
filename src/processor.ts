@@ -1,7 +1,7 @@
 import MdProcessor from "@localizesh/processor-md";
 import parse from "remark-parse";
 import stringify from "remark-stringify";
-import {Document, LayoutElement, LayoutRoot} from "@localizesh/sdk";
+import {Document, element, LayoutElement, LayoutRoot, root, text, visitParents} from "@localizesh/sdk";
 import {State as H} from "hast-util-to-mdast";
 import {Parents as HastParents} from "hast";
 import {State} from "mdast-util-to-hast";
@@ -9,8 +9,7 @@ import {unified} from "unified";
 import mdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import gfm from "remark-gfm";
-import {MdastRoot} from "rehype-remark/lib";
-import {visitParents} from "unist-util-visit-parents";
+import {Root as MdastRoot} from "mdast";
 import {deleteFields} from "./utils/deleteFields.js";
 import {getTagNameWithAttributes} from "./utils/getTagNameWithAttributes.js";
 import {getFlatChildren} from "./utils/getFlatChildren.js";
@@ -211,21 +210,7 @@ class MdxProcessor extends MdProcessor {
     };
 
     const flowHandler = (h: H, node: HastParents) => {
-
-      return {
-        type: "element",
-        tagName: "p",
-        properties: {},
-        children: [
-          {
-            type: "text",
-            value: this.parseMdastToMarkdown(
-              {type: "root", children: [node]} as MdastRoot
-            ).trim()
-          }
-        ]
-      };
-
+      return element("p", text(this.parseMdastToMarkdown(root([node]) as MdastRoot).trim()));
     };
 
     this.addMdastToHastHandler({}, {
@@ -271,7 +256,7 @@ class MdxProcessor extends MdProcessor {
 
       return {
         ...node,
-        children: children,
+        children,
       };
     }
   }
