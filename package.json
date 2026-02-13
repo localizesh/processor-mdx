@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc --project tsconfig.build.json",
-    "test": "mocha",
+    "test": "vitest run",
     "postinstall": "patch-package-ignore-missing --patch-dir node_modules/@localizesh/processor-md/patches"
   },
   "dependencies": {
@@ -18,14 +18,10 @@
     "remark-mdx": "^3.1.0"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.1",
-    "@types/mocha": "^10.0.7",
-    "chai": "^5.2.0",
     "eol": "^0.10.0",
-    "mocha": "^11.1.0",
     "patch-package-ignore-missing": "^7.0.1-2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "@localizesh/sdk": "^0.3.2"

@@ -1,4 +1,4 @@
-import {assert} from "chai";
+import { describe, it, expect } from 'vitest';
 import eol from "eol";
 
 import fs from "fs";
@@ -18,7 +18,7 @@ function processAndCompare(filename: string) {
   const outDocStructure = processor.parse(outDoc);
   const outDocStructureStr = JSON.stringify(outDocStructure);
 
-  assert.equal(outDocStructureStr, docStr);
+  expect(outDocStructureStr).toBe(docStr);
   console.log(filename);
 }
 
@@ -31,13 +31,13 @@ function processAndCompareWithExpected(filename: string) {
   const doc = processor.parse(inDoc);
   const outDoc = processor.stringify(doc);
 
-  assert.equal(outDoc, inDocExpected);
+  expect(outDoc).toBe(inDocExpected);
   console.log(filename);
 }
 
-describe('MdxProcessorTest', function () {
-  it('documents should be equal', function () {
-    this.timeout(10000);
+describe('MdxProcessorTest', () => {
+  it('documents should be equal', () => {
+    // Timeout is configured in vitest.config.ts
     processAndCompareWithExpected('blockquotes.mdx');
     processAndCompareWithExpected('1index.mdx');
     processAndCompareWithExpected('using-mdx.mdx');
@@ -56,6 +56,3 @@ describe('MdxProcessorTest', function () {
     processAndCompare('index.mdx');
   });
 });
-
-
-
