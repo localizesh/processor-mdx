@@ -1,9 +1,17 @@
 {
   "name": "@localizesh/processor-mdx",
   "repository": "localizesh/processor-mdx",
+  "license": "Apache-2.0",
+  "author": "Localize.sh",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "/dist"
   ],
@@ -20,7 +28,7 @@
   "devDependencies": {
     "eol": "^0.10.0",
     "patch-package-ignore-missing": "^7.0.1-2",
-    "typescript": "^5.8.2",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "peerDependencies": {
