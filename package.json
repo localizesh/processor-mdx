@@ -1,6 +1,7 @@
 {
   "name": "@localizesh/processor-mdx",
   "repository": "localizesh/processor-mdx",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
